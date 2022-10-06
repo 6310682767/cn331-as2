@@ -1,36 +1,38 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate
 from django.urls import reverse
 from .models import Course, Enrolment
 
 # Create your views here.
 
 def index(request):
-    courses = Course.objects.all()
     return render(request, 'courses/index.html', {
-        'courses': courses
+        'courses': Course.objects.all()
     })
 
 def courseInfo(request, course_id):
-    course = Course.objects.get(pk=course_id)
+    course = get_object_or_404(Course, pk=course_id)
     return render(request, 'courses/course.html', {
         'course': course,
         'enrolments': course.enrolments.all(),
-        'nonenrolments': Enrolment.objects.exclude(courses=course).all(),
+        'nonenrolments': Enrolment.objects.exclude(courses=course)
     })
 
 def enroll(request, course_id):
     if request.method == "POST":
-        course = Course.objects.get(pk=course_id)
-        enrolment = Enrolment.objects.get(pk=request.POST['enrolment'])
-        course.enrolments.add(enrolment)
-        return HttpResponseRedirect(reverse('course', args=(course_id,)))
+        course = get_object_or_404(Course, pk=course_id)
+        enrolment = get_object_or_404(Enrolment, pk=int(request.POST['enrolment']))
+        if enrolment not in course.enrolments.all() and course.is_seat_available():
+            enrolment = Enrolment.objects.get(pk=int(request.POST["enrolment"]))
+            enrolment.courses.add(course)
+        return HttpResponseRedirect(reverse('courses:course', args=(course_id,)))
     
 def enrollCancel(request, course_id):
      if request.method == "POST":
-        course = Course.objects.get(pk=course_id)
-        enrolment = Enrolment.objects.get(pk=request.POST['enrolment'])
-        course.enrolments.remove(enrolment)
-        return HttpResponseRedirect(reverse('course', args=(course_id,)))
+        course = get_object_or_404(Course, pk=course_id)
+        enrolment = get_object_or_404(Enrolment, pk=int(request.POST['enrolment']))
+        if enrolment in course.enrolments.all():
+            enrolment = Enrolment.objects.get(pk=int(request.POST["enrolment"]))
+            enrolment.courses.remove(course)
+        return HttpResponseRedirect(reverse('courses:course', args=(course_id,)))
     

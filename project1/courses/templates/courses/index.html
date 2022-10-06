@@ -42,13 +42,13 @@
             {% endif %}
             </center>
         <td>
-        <td><a href="{% url 'course' course.id %}">Detail</a></td>
+        <td><a href="{% url 'courses:course' course.id %}">Detail</a></td>
     </tr>
     {% empty %}
     <li>No courses.</li>
     {% endfor %}
 </table>
 
-<a href="{% url 'index' %}">Go Back</a>
+<a href="{% url 'users:index' %}">Go Back</a>
 </body>
 </html>
