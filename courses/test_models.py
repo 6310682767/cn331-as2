@@ -14,8 +14,7 @@ class TestModels(TestCase):
             seat="99", 
             quota="OPEN"
         )
-        course.save()
-        
+        course.save()     
         self.assertEqual(str(course), "XXXXX | YYYYY")
         
     def test_create_enrolment(self):
@@ -24,6 +23,5 @@ class TestModels(TestCase):
             first_name = "harry",
             last_name = "potter"
         )
-        enrolment.save()
-        
+        enrolment.save()        
         self.assertEqual(str(enrolment), "harry potter")
