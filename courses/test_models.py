@@ -27,7 +27,3 @@ class TestModels(TestCase):
         enrolment.save()
         
         self.assertEqual(str(enrolment), "harry potter")
-
-   
-
-   
