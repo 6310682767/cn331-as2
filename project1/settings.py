@@ -127,3 +127,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = ["https://thawing-caverns-30797.herokuapp.com"]
 
+import django_heroku
+django_heroku.settings(locals())
