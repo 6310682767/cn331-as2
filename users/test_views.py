@@ -29,10 +29,3 @@ class CourseViewTestCase(TestCase):
         c = Client()
         response = c.get(reverse('users:courses'))
         self.assertEqual(response.status_code, 200)
-
-
-        
-        
-
-
-
