@@ -6,8 +6,20 @@ from django.urls import reverse
 class CourseViewTestCase(TestCase):
     
     def setUp(self):
-        user = User.objects.create(username='john', password='lennon')
-        user.save()
+        
+        self.user = User.objects.create_user(
+            email='john@gmail.com',
+            password='lennon',
+            username='john'
+        )
+        
+    def test_index_view_status_code(self):
+        """ index view's status code is ok """
+
+        c = Client()
+        c.force_login(self.user)
+        response = c.post(reverse('users:index'), follow=True)
+        self.assertEqual(response.status_code, 200)
        
     def test_login_view_status_code(self):
         """ login view's status code is ok """
