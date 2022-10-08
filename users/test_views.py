@@ -20,7 +20,17 @@ class CourseViewTestCase(TestCase):
         c.force_login(self.user)
         response = c.post(reverse('users:index'), follow=True)
         self.assertEqual(response.status_code, 200)
-       
+    
+    def test_login_to_index_page(self):
+        """ login to index's page """
+
+        c = Client()
+        response = c.post(reverse('users:login'), {
+            'username': self.user.username,
+            'password': self.user.password
+        })
+        self.assertEqual(response.status_code, 200)
+        
     def test_login_view_status_code(self):
         """ login view's status code is ok """
 
